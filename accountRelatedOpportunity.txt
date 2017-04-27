@@ -1,0 +1,39 @@
+<!--
+    Page to show an Account and Dispaly it's related Opportunities.
+    Add button on the Top to add 'new' row and save the opportunity.
+    Delete link to delete the Opportunity.
+--> 
+<apex:page standardController="Account" extensions="RelatedOpportunities">
+    <apex:form id="frm">
+        <apex:sectionHeader title="Account" subtitle="{!Account.Name}"/>
+            <apex:pageblock id="CustomList" title="Related Opportunities">
+                <apex:variable var="index" value="{!0}"/>
+                <apex:pageBlockTable value="{!oppAll}" var="opp" rendered="{!NOT(ISNULL(oppAll))}">
+                <apex:column headerValue="Action">
+                <apex:commandLink reRender="frm" value="Del" action="{!deleteOpp}" rendered="{!opp.blnIsView}">
+                    <apex:param name="indexInsert" value="{!index}"/>
+                </apex:commandLink>
+                <apex:commandLink reRender="frm" value="Save" action="{!insertData}" rendered="{!!opp.blnIsView}">
+                    <apex:param name="indexInsert" value="{!index}"/>
+                </apex:commandLink>
+                </apex:column>
+                <apex:column headerValue="Name">
+                    <apex:outputField value="{!opp.oppData.name}" rendered="{!opp.blnIsView}"/>
+                    <apex:inputField value="{!opp.oppData.name}" rendered="{!!opp.blnIsView}"/>
+                </apex:column>
+                <apex:column headerValue="StageName">
+                    <apex:outputField value="{!opp.oppData.StageName}" rendered="{!opp.blnIsView}"/>
+                    <apex:inputField value="{!opp.oppData.StageName}" rendered="{!!opp.blnIsView}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:outputField value="{!opp.oppData.CloseDate}" rendered="{!opp.blnIsView}"/>
+                    <apex:inputField value="{!opp.oppData.CloseDate}" rendered="{!!opp.blnIsView}"/>
+                    <apex:variable var="index" value="{!index+1}"/>
+                </apex:column>
+                </apex:pageBlockTable>
+            <apex:pageBlockButtons location="Top">
+            <apex:commandButton action="{!addnewOpp}" value="Add" reRender="frm"/>       
+            </apex:pageBlockButtons>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>
